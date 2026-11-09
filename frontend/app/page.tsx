@@ -23,7 +23,7 @@ export default function Home() {
     <header className="topbar">
       <a className="brand" href="#home" aria-label="TamboPay home"><span className="brand-mark">T</span><span className="brand-name">Tambo<span>Pay</span><small>Airtime • Data • Bills & More</small></span></a>
       <nav aria-label="Main navigation" className="nav"><a href="#home">Home</a><a href="#services">Airtime</a><a href="#services">Data</a><a href="#services">Bills</a><a href="#services">Education</a><a href="#checkout">Quick Pay</a></nav>
-      <span className="demo-pill">DEMO PREVIEW</span>
+      <a className="portal-nav-link" href="/login">Sign in</a><a className="portal-nav-link" href="/account">My account</a><a className="portal-nav-link" href="/support">Support</a><span className="demo-pill">DEMO PREVIEW</span>
     </header>
     <main id="home">
       <section className="hero-layout">
