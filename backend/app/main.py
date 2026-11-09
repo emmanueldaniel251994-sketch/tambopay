@@ -6,8 +6,16 @@ from sqlalchemy.orm import Session
 from .db import get_db
 from .models import Order
 from .schemas import OrderCreate, OrderOut
+from .auth import current_customer
+from .models import Customer
+from .customer_routes import router as customer_router
+from .ai_routes import router as assistant_router
 
 app = FastAPI(title='TamboPay API', version='0.1.0', docs_url='/api/docs', openapi_url='/api/openapi.json')
+
+
+app.include_router(customer_router)
+app.include_router(assistant_router)
 
 
 @app.get('/api/v1/health')
@@ -16,10 +24,10 @@ def health():
 
 
 @app.post('/api/v1/orders', response_model=OrderOut, status_code=status.HTTP_201_CREATED)
-def create_order(payload: OrderCreate, db: Session = Depends(get_db)):
+def create_order(payload: OrderCreate, db: Session = Depends(get_db), customer: Customer = Depends(current_customer)):
     # Foundation only: order creation does NOT charge or fulfill a service.
     amount_kobo = int(payload.amount * Decimal('100'))
-    order = Order(reference=f'TP-{uuid.uuid4().hex}', service=payload.service, customer_reference=payload.customer_reference, amount_kobo=amount_kobo)
+    order = Order(customer_id=customer.id, reference=f'TP-{uuid.uuid4().hex}', service=payload.service, customer_reference=payload.customer_reference, amount_kobo=amount_kobo)
     db.add(order)
     try:
         db.commit()
