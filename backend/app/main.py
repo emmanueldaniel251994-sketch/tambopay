@@ -10,12 +10,14 @@ from .auth import current_customer
 from .models import Customer
 from .customer_routes import router as customer_router
 from .ai_routes import router as assistant_router
+from .readiness import router as readiness_router
 
 app = FastAPI(title='TamboPay API', version='0.1.0', docs_url='/api/docs', openapi_url='/api/openapi.json')
 
 
 app.include_router(customer_router)
 app.include_router(assistant_router)
+app.include_router(readiness_router)
 
 
 @app.get('/api/v1/health')
